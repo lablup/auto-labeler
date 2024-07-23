@@ -1,0 +1,17 @@
+name: "auto-labeler"
+description: "Composite action for label automation"
+runs:
+  using: "composite"
+  steps:
+    - name: labeler
+      if: github.event.action == 'opened' || github.event.action == 'reopened' || github.event.action == 'synchronize'
+      uses: actions/labeler@v5
+    - name: size-label
+      if: github.event.action == 'opened' || github.event.action == 'reopened' || github.event.action == 'synchronize'
+      uses: "lablup/size-label-action@master"
+      env:
+        GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+        IGNORED: "**/*.lock"
+    - name: auto-label-in-issue
+      if: github.event.action == 'opened' || github.event.action == 'reopened' || github.event.action == 'synchronize'
+      uses: lablup/auto-label-in-issue@1.7.0
