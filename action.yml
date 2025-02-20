@@ -5,14 +5,18 @@ inputs:
     description: "GitHub token"
     required: true
     default: ${{ github.token }}
+outputs:
+  all-labels:
+    description: "All labels"
+    value: ${{ steps.labeler.outputs.all-labels }}
 runs:
   using: "composite"
   steps:
-    - name: labeler
-      uses: actions/labeler@v5
     - name: size-label
       uses: lablup/size-label-action@master
       with:
         ignored: "**/*.lock"
     - name: auto-label-in-issue
       uses: lablup/auto-label-in-issue@1.7.0
+    - name: labeler
+      uses: actions/labeler@v5
